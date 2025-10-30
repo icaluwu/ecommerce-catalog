@@ -1,6 +1,6 @@
 # Ecommerce Catalog — Rakamin Task 5 (Vue 2 + Vanilla CSS)
 
-**Live Demo**: https://<username>.github.io/ecommerce-catalog  
+**Live Demo**: https://icaluwu.github.io/ecommerce-catalog  
 
 **Repo**: https://github.com/icaluwu/ecommerce-catalog
 
