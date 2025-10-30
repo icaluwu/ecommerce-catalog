@@ -1,0 +1,118 @@
+/* =========================================================
+   Rakamin Task 5 — Figma-aligned Vanilla CSS (Vue2 binding)
+   Color tokens extracted from Figma SVGs provided.
+   ========================================================= */
+
+:root {
+  /* Neutrals (from Figma) */
+  --text-strong: #1E1E1E;
+  --text: #3F3F3F;
+
+  /* Men */
+  --men-bg: #D6E6FF;
+  --men-primary: #002772;
+
+  /* Women */
+  --women-bg: #FDE2FF;
+  --women-primary: #720060;
+
+  /* Unavailable */
+  --unavailable-bg: #D8D7D7;
+
+  /* Components */
+  --card-bg: #FFFFFF;
+  --card-border: rgba(0,0,0,0.08);
+  --radius-a: 15px; /* TL & BL */
+  --radius-b: 20px; /* TR & BR */
+  --shadow: 0 8px 24px rgba(0,0,0,0.10);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; font-family: Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif; color: var(--text); }
+
+/* Page themes */
+#app.page-men          { background: var(--men-bg); }
+#app.page-women        { background: var(--women-bg); }
+#app.page-unavailable  { background: var(--unavailable-bg); }
+#app.page-neutral      { background: #F5F7FA; }
+
+.shell { width: min(1080px, 92vw); margin: 0 auto; padding: 24px; }
+
+.header { text-align: center; padding-top: 28px; }
+.brand  { margin: 0 0 6px; font-size: 1.8rem; letter-spacing: .3px; color: var(--text-strong); }
+.tagline{ margin: 0; color: var(--text); opacity: .8; }
+
+.card {
+  position: relative;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-a) var(--radius-b) var(--radius-a) var(--radius-b);
+  box-shadow: var(--shadow);
+  padding: 26px;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 26px;
+  align-items: center;
+}
+
+/* Theme-specific accents */
+#app.page-men   .title { color: var(--men-primary); }
+#app.page-women .title { color: var(--women-primary); }
+#app.page-unavailable .title { color: var(--text); }
+
+.badge {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  padding: 6px 10px;
+  line-height: 1;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+  color: #FFFFFF;
+  background: var(--text);
+}
+#app.page-men   .badge { background: var(--men-primary); }
+#app.page-women .badge { background: var(--women-primary); }
+
+.media { display: grid; place-items: center; min-height: 280px; }
+.media img {
+  width: min(380px, 100%);
+  height: auto;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-a) var(--radius-b) var(--radius-a) var(--radius-b);
+  padding: 12px;
+  background: #FAFAFA;
+}
+
+.content .title { margin: 0 0 10px; line-height: 1.25; font-size: 1.42rem; }
+.content .desc  { margin: 0 0 16px; color: var(--text); opacity: .95; }
+
+.meta { display: flex; gap: 12px; align-items: center; color: var(--text); opacity: .9; font-size: .96rem; }
+.meta .price { font-weight: 700; }
+.meta .index { margin-left: auto; opacity: .85; }
+
+.actions { margin-top: 18px; display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  border: 1px solid var(--card-border);
+  background: #F3F4F6;
+  color: var(--text-strong);
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform .08s ease, background .2s ease, box-shadow .2s ease;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,0.07); }
+.btn:active { transform: translateY(0); }
+.btn.primary { border: none; color: #FFFFFF; }
+#app.page-men   .btn.primary { background: var(--men-primary); }
+#app.page-women .btn.primary { background: var(--women-primary); }
+#app.page-unavailable .btn.primary { background: var(--text); }
+
+.footer { text-align: center; color: var(--text); opacity: .75; padding-bottom: 28px; }
+
+/* Responsive */
+@media (max-width: 960px) {
+  .card { grid-template-columns: 1fr; }
+  .media img { width: min(420px, 100%); }
+}

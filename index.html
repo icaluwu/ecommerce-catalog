@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ecommerce Catalog — Rakamin Task 5</title>
+  <meta name="description" content="Vue 2 + Vanilla CSS implementation aligned with Rakamin Task 5 and Figma concepts." />
+  <link rel="stylesheet" href="./src/styles.css" />
+</head>
+<body>
+  <div id="app" :class="pageClass">
+    <header class="shell header">
+      <h1 class="brand">Ecommerce Catalog</h1>
+      <p class="tagline">Vue 2 • Vanilla CSS • FakeStore API</p>
+    </header>
+
+    <main class="shell">
+      <section class="card" v-if="state !== 'error'">
+        <div class="badge" v-if="categoryBadge">{{ categoryBadge }}</div>
+
+        <div class="media">
+          <img v-if="state==='ready' && product.image"
+               :src="product.image" :alt="product.title" loading="lazy"/>
+          <img v-else src="./assets/placeholder.svg" alt="No product available" />
+        </div>
+
+        <div class="content">
+          <h2 class="title" v-text="state==='ready' ? product.title : unavailableTitle"></h2>
+          <p class="desc" v-text="state==='ready' ? product.description : unavailableDesc"></p>
+
+          <div class="meta">
+            <span class="price" v-if="state==='ready'">{{ priceFmt }}</span>
+            <span class="category" v-if="state==='ready'">{{ product.category }}</span>
+            <span class="index">#{{ index }}/20</span>
+          </div>
+
+          <div class="actions">
+            <button class="btn primary" @click="nextProduct">Next Product</button>
+            <button class="btn ghost" @click="refetch">Retry</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="error card" v-else>
+        <h2>Network Error</h2>
+        <p>Terjadi masalah saat memuat data. Silakan coba lagi.</p>
+        <div class="actions">
+          <button class="btn primary" @click="refetch">Retry</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="shell footer">
+      <small>Built for Rakamin VIX • {{ now }}</small>
+    </footer>
+  </div>
+
+  <!-- Vue 2 via CDN (meets "install Vue 2" requirement while keeping static deployability) -->
+  <script src="https://unpkg.com/vue@2.7.16/dist/vue.js"></script>
+  <script src="./src/app.js"></script>
+</body>
+</html>
