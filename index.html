@@ -3,44 +3,106 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ecommerce Catalog — Rakamin Task 5</title>
-  <meta name="description" content="Vue 2 + Vanilla CSS implementation aligned with Rakamin Task 5 and Figma concepts." />
+  <title>Ecommerce Catalog — Apparel Sections</title>
+  <meta name="description" content="Vue 2 apparel-style Men/Women sections with Unavailable fallback." />
   <link rel="stylesheet" href="./src/styles.css" />
 </head>
 <body>
   <div id="app" :class="pageClass">
     <header class="shell header">
-      <h1 class="brand">Ecommerce Catalog</h1>
-      <p class="tagline">Vue 2 • Vanilla CSS • FakeStore API</p>
+      <h1 class="brand">Apparel Catalog</h1>
+      <p class="tagline">Men • Women • Unavailable — FakeStore API</p>
     </header>
 
     <main class="shell">
+      <!-- Main product card -->
       <section class="card" v-if="state !== 'error'">
         <div class="badge" v-if="categoryBadge">{{ categoryBadge }}</div>
 
+        <!-- Media column -->
         <div class="media">
           <img v-if="state==='ready' && product.image"
                :src="product.image" :alt="product.title" loading="lazy"/>
           <img v-else src="./assets/placeholder.svg" alt="No product available" />
         </div>
 
-        <div class="content">
-          <h2 class="title" v-text="state==='ready' ? product.title : unavailableTitle"></h2>
-          <p class="desc" v-text="state==='ready' ? product.description : unavailableDesc"></p>
+        <!-- Content column -->
+        <div class="content" v-if="state==='ready'">
+          <h2 class="title">{{ product.title }}</h2>
 
-          <div class="meta">
-            <span class="price" v-if="state==='ready'">{{ priceFmt }}</span>
-            <span class="category" v-if="state==='ready'">{{ product.category }}</span>
-            <span class="index">#{{ index }}/20</span>
+          <div class="pricing">
+            <span class="price">{{ priceFmt }}</span>
+            <span class="rating" v-if="product.rating">
+              ★ {{ product.rating.rate.toFixed(1) }} <small>({{ product.rating.count }})</small>
+            </span>
+          </div>
+
+          <p class="desc">{{ product.description }}</p>
+
+          <!-- Apparel controls -->
+          <div class="controls">
+            <div class="row">
+              <label class="label">Color</label>
+              <div class="swatches">
+                <button v-for="c in activePalette"
+                        :key="c.name"
+                        :title="c.name"
+                        class="swatch"
+                        :style="{ background: c.hex }"
+                        :class="{ selected: selectedColor === c.name }"
+                        @click="selectedColor = c.name"></button>
+              </div>
+            </div>
+
+            <div class="row">
+              <label class="label">Size</label>
+              <div class="sizes">
+                <button v-for="s in sizes"
+                        :key="s"
+                        class="size"
+                        :class="{ selected: selectedSize === s }"
+                        @click="selectedSize = s">{{ s }}</button>
+              </div>
+              <button class="link">Size guide</button>
+            </div>
+
+            <div class="row qty-row">
+              <label class="label">Qty</label>
+              <div class="qty">
+                <button class="qty-btn" @click="decQty" :disabled="qty<=1">−</button>
+                <input class="qty-input" type="number" min="1" v-model.number="qty">
+                <button class="qty-btn" @click="incQty">+</button>
+              </div>
+            </div>
           </div>
 
           <div class="actions">
+            <button class="btn primary" @click="addToCart" :disabled="!selectedSize">Add to Bag</button>
+            <button class="btn ghost" @click="nextProduct">Next Product</button>
+            <span class="index">#{{ index }}/20</span>
+          </div>
+
+          <div class="benefits">
+            <span>✓ Free returns</span>
+            <span>✓ Secure checkout</span>
+            <span>✓ 2–4 day shipping</span>
+          </div>
+        </div>
+
+        <!-- Unavailable state content -->
+        <div class="content unavailable" v-else>
+          <h2 class="title">Product Unavailable</h2>
+          <p class="desc">Item ini bukan kategori pakaian pria/wanita. Coba produk berikutnya.</p>
+          <div class="actions">
             <button class="btn primary" @click="nextProduct">Next Product</button>
-            <button class="btn ghost" @click="refetch">Retry</button>
+          </div>
+          <div class="benefits neutral">
+            <span>Tip: gunakan tombol Next untuk mencari item fashion</span>
           </div>
         </div>
       </section>
 
+      <!-- Error card -->
       <section class="error card" v-else>
         <h2>Network Error</h2>
         <p>Terjadi masalah saat memuat data. Silakan coba lagi.</p>
@@ -55,8 +117,7 @@
     </footer>
   </div>
 
-  <!-- Vue 2 via CDN (meets "install Vue 2" requirement while keeping static deployability) -->
   <script src="https://unpkg.com/vue@2.7.16/dist/vue.js"></script>
-  <script src="./src/app.js"></script>
+  <script src="./src/apparel.js"></script>
 </body>
 </html>
